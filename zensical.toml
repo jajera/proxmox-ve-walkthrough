@@ -1,0 +1,42 @@
+[project]
+site_name = "Proxmox VE walkthrough"
+site_description = "Proxmox VE from ISO to web UI ready host"
+site_url = "https://proxmox-ve-walkthrough.johna.kiwi/"
+nav = [
+  { "Overview" = "index.md" },
+  { "What you need" = "prerequisites.md" },
+  { "Download ISO" = "download.md" },
+  { "Write USB" = "write-usb.md" },
+  { "Install" = "install.md" },
+  { "First boot" = "first-boot.md" },
+  { "Prove web UI" = "prove-web-ui.md" },
+  { "Troubleshooting" = "troubleshooting.md" },
+  { "References" = "references.md" },
+]
+
+[project.theme]
+name = "patina"
+custom_dir = "overrides"
+language = "en"
+favicon = "assets/favicon.png"
+logo = "assets/favicon.svg"
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+]
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+md_in_html = {}
+pymdownx.details = {}
+pymdownx.highlight = {}
+pymdownx.superfences.custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+"pymdownx.tabbed" = { alternate_style = true }
+toc.permalink = true
+zensical.extensions.glightbox = { width = "95vw", height = "auto", zoomable = true }
