@@ -9,11 +9,25 @@ examples use `192.168.1.60`.
 
 ## Check the host
 
+<div class="run" markdown>
+
 ```bash
 hostnamectl; ip -br a; pveversion
 systemctl is-active pveproxy pvedaemon
 test -e /dev/kvm && echo kvm_ok
 ```
+
+```text {.no-copy}
+ Static hostname: pve
+…
+vmbr0            UP             192.168.1.60/24
+pve-manager/9.2.26/… (running kernel: …)
+active
+active
+kvm_ok
+```
+
+</div>
 
 ![Host checks: vmbr0 has the IP, services active, kvm_ok](assets/first-boot/03-host-checks.jpg)
 
@@ -24,33 +38,16 @@ VT-x / AMD-V is off in firmware.
 
 === "Two disks: ZFS mirror"
 
-    ```bash
-    zpool status
-    ```
+    Run `zpool status`. Both legs of `mirror-0` should be `ONLINE`.
+    `DEGRADED` means a disk is missing or failing — reseat or replace it.
 
     ![zpool status, mirror-0 and both disks ONLINE](assets/first-boot/02-zpool-status.jpg)
 
-    Both disks `ONLINE`. `DEGRADED` means a disk is missing or failing.
-
 === "One disk: ext4"
 
-    <div class="run" markdown>
-
-    ```bash
-    lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT
-    pvs
-    ```
-
-    ```text {.no-copy}
-    NAME               SIZE FSTYPE …
-    …
-    pve                …
-    ```
-
-    </div>
-
-    The `pve` volume group sits on the install disk.
+    Run `lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT` and `pvs`. You should see the
+    `pve` volume group on the install disk.
 
 ## Next
 
-[Update host](update-host.md){ .md-button }
+[Update host](update-host.md)

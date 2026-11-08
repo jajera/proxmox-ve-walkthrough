@@ -24,8 +24,7 @@
     A single internal disk with the installer default (ext4 on LVM). Full
     capacity, no redundancy.
 
-!!! danger "The install erases every selected disk"
-    Back up first. This applies to both layouts.
+!!! danger "The install erases every selected disk — back up first (both layouts)"
 
 ## Check your disks
 
