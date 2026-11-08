@@ -9,6 +9,7 @@ nav = [
   { "Write USB" = "write-usb.md" },
   { "Install" = "install.md" },
   { "First boot" = "first-boot.md" },
+  { "Update host" = "update-host.md" },
   { "Prove web UI" = "prove-web-ui.md" },
   { "Troubleshooting" = "troubleshooting.md" },
   { "References" = "references.md" },

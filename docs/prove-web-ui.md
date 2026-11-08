@@ -1,97 +1,57 @@
 # Prove web UI
 
-From the **workstation** (replace the IP):
+From the **workstation**. Use the IP from [First boot](first-boot.md).
 
 <div class="run" markdown>
 
 ```bash
-curl -kI https://192.168.1.60:8006/
+curl -k -sS -o /dev/null -w "%{http_code} %{server}\n" https://192.168.1.60:8006/
 ```
 
 ```text {.no-copy}
-HTTP/1.1 200 OK
-…
+200 pve-api-daemon/3.0
 ```
 
 </div>
 
-## Browser login
+Use a GET as above. `curl -I` can return 501 on this API.
 
-1. Open `https://192.168.1.60:8006/` in a browser.
-2. Accept the self-signed certificate warning (expected on a fresh install).
-3. Log in as **root** with realm **Linux PAM standard authentication**.
-4. When **No valid subscription** appears, click **OK**. It shows once per
-   login, is cosmetic, and does not lock features.
+## 1. Log in
 
-## Repositories without a subscription
+Open `https://<ip>:8006/` and accept the self-signed certificate warning.
+Username `root`, realm **Linux PAM standard authentication**.
 
-Enterprise repos return authentication errors without a key. Switch to the
-no-subscription repo (Proxmox VE 9 / Debian Trixie uses the modern
-`deb822` `.sources` format).
+![Login dialog: root, Linux PAM realm](assets/web-ui/01-login.jpg)
 
-### UI path
+## 2. Dismiss the subscription notice
 
-1. Select the node → **Updates** → **Repositories**.
-2. Disable the **Enterprise** repository (and any other enterprise Ceph
-   entries you are not using).
-3. Add / enable **No-Subscription** (`pve-no-subscription`).
-4. Back on **Updates**, **Refresh**, then **Upgrade**.
+It appears at every login, is cosmetic, and locks nothing.
 
-### CLI path
+![No valid subscription dialog, OK](assets/web-ui/02-subscription.jpg)
 
-Disable enterprise by editing the enterprise sources file (exact filename may
-be `pve-enterprise.sources` on a fresh 9.x install):
+## 3. Node online
 
-<div class="run" markdown>
+Select **pve**. The tooltip reads **Status: online**, and `local` plus the
+install storage are listed (`local-zfs` on the ZFS layout, `local-lvm` on
+ext4).
 
-```bash
-ls /etc/apt/sources.list.d/
-```
+![Node pve online with local and local-zfs storage](assets/web-ui/03-node-summary.jpg)
 
-```text {.no-copy}
-debian.sources
-pve-enterprise.sources
-…
-```
+## 4. Repositories
 
-</div>
+**Node → Updates → Repositories**. Enterprise entries are disabled and the
+no-subscription repo is enabled.
 
-Create or edit `/etc/apt/sources.list.d/proxmox.sources`:
+![APT Repositories: updates available, enterprise disabled](assets/web-ui/04-repositories.jpg)
 
-```text
-Types: deb
-URIs: http://download.proxmox.com/debian/pve
-Suites: trixie
-Components: pve-no-subscription
-Signed-By: /usr/share/keyrings/proxmox-archive-keyring.gpg
-```
-
-Disable the enterprise entry (UI toggle, or add `Enabled: false` to that
-stanza). Then:
-
-<div class="run" markdown>
-
-```bash
-apt-get update
-apt-get -y dist-upgrade
-pveversion
-```
-
-```text {.no-copy}
-…
-pve-manager/9.2-…/…
-```
-
-</div>
-
-Confirm the node summary in the UI shows a current `pve-manager` version and
-no repository error badges.
+The yellow **no-subscription is not recommended for production** warning is
+expected on this path.
 
 !!! note "Consuming labs"
-    Record `PVE_HOST` (and credentials) in that project’s env file. Never commit
-    passwords or API tokens. Guest installs stay in the consuming walkthrough.
+    Keep `PVE_HOST` and credentials in that project's env file. Never commit
+    passwords or API tokens.
 
 ## Done
 
-You have a web-UI-reachable Proxmox VE host. See
-[Troubleshooting](troubleshooting.md) if something failed.
+You have an updated Proxmox VE host with a working web UI. Something wrong?
+See [Troubleshooting](troubleshooting.md).

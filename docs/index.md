@@ -1,27 +1,24 @@
 # Overview
 
-Install **Proxmox VE** on spare x86_64 hardware and prove you can open the web
-UI on the LAN. That is the whole guide.
+Install **Proxmox VE** on spare x86_64 hardware and open the web UI on your
+LAN.
 
-Other walkthroughs link here for host prep, then layer their own hostname,
-storage choices beyond the install tabs, guests, and workloads.
+```mermaid
+flowchart LR
+  A["Download<br/>ISO"] --> B["Write<br/>USB"] --> C["Install"] --> D["First<br/>boot"] --> E["Update<br/>host"] --> F["Web UI"]
+```
 
-## What you will do
+| Step | Page | You end with |
+| --- | --- | --- |
+| 1 | [Download ISO](download.md) | Verified `proxmox-ve_9.2-1.iso` |
+| 2 | [Write USB](write-usb.md) | Bootable stick |
+| 3 | [Install](install.md) | Proxmox VE on the target disk(s) |
+| 4 | [First boot](first-boot.md) | Management URL and healthy services |
+| 5 | [Update host](update-host.md) | Current packages, correct apt repos |
+| 6 | [Prove web UI](prove-web-ui.md) | Logged in at `https://<ip>:8006` |
 
-1. Download the Proxmox VE installer ISO and verify SHA256
-2. Detect the USB stick (`TRAN=usb`), then write the ISO with `dd` (or Etcher)
-3. Run the graphical installer with the choices this guide dictates
-4. Confirm services on first boot and take the LAN IP
-5. Prove the web UI at `https://<ip>:8006`
+!!! info "Out of scope"
+    Clustering, HA, Ceph, and guests (VMs, containers). Those belong in the
+    walkthroughs that link here. No subscription is required.
 
-## What this does not do
-
-- Clustering or high availability
-- Ceph or shared storage
-- Creating VMs, containers, or workloads (Home Assistant and friends stay in
-  consuming labs)
-- Buying a subscription (the free no-subscription repo is enough here)
-
-## Next
-
-[What you need](prerequisites.md)
+[What you need](prerequisites.md){ .md-button }

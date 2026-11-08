@@ -1,9 +1,15 @@
-.venv/
-site/
-.cache/
-.DS_Store
-*.zip
-__pycache__/
-*.pyc
-*.iso
 attachments*/
+.cache/
+.capture-refs/
+.DS_Store
+IMG_*.HEIC
+IMG_*.jpeg
+IMG_*.jpg
+IMG_*.JPG
+*.iso
+*.pyc
+__pycache__/
+site/
+.venv/
+*.zip
+Untitled design*.png

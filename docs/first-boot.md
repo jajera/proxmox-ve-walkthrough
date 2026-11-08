@@ -1,65 +1,36 @@
 # First boot
 
-After reboot the console shows a banner with the management URL, for example:
+The console prints the management URL. Note it.
 
-```text
-https://192.168.1.60:8006/
-```
+![Console banner with the management URL](assets/first-boot/01-console-banner.jpg)
 
-Log in as `root` with the password you set at install.
+Log in as `root` with the install password. Your IP will differ; this guide's
+examples use `192.168.1.60`.
 
 ## Check the host
 
-<div class="run" markdown>
-
 ```bash
-hostnamectl
-ip -br a
-pveversion
+hostnamectl; ip -br a; pveversion
 systemctl is-active pveproxy pvedaemon
 test -e /dev/kvm && echo kvm_ok
 ```
 
-```text {.no-copy}
-Static hostname: pve
-…
-vmbr0            UP             192.168.1.60/24 …
-pve-manager/9.2-…/… (running version: …)
-active
-active
-kvm_ok
-```
+![Host checks: vmbr0 has the IP, services active, kvm_ok](assets/first-boot/03-host-checks.jpg)
 
-</div>
+You want `vmbr0` with your IP, two `active`, and `kvm_ok`. No `kvm_ok` means
+VT-x / AMD-V is off in firmware.
 
-Note the LAN IPv4 on `vmbr0` for the next page. If `kvm_ok` is missing, enable
-Intel VT-x or AMD-V in firmware and reboot.
-
-## Confirm storage layout
+## Check storage
 
 === "Two disks: ZFS mirror"
-
-    <div class="run" markdown>
 
     ```bash
     zpool status
     ```
 
-    ```text {.no-copy}
-      pool: rpool
-     state: ONLINE
-    …
-    	NAME        STATE
-    	rpool       ONLINE
-    	  mirror-0  ONLINE
-    	    …       ONLINE
-    	    …       ONLINE
-    ```
+    ![zpool status, mirror-0 and both disks ONLINE](assets/first-boot/02-zpool-status.jpg)
 
-    </div>
-
-    Both legs of `mirror-0` should be `ONLINE`. `DEGRADED` means a disk is
-    missing or failing — reseat or replace it, then re-check.
+    Both disks `ONLINE`. `DEGRADED` means a disk is missing or failing.
 
 === "One disk: ext4"
 
@@ -72,14 +43,14 @@ Intel VT-x or AMD-V in firmware and reboot.
 
     ```text {.no-copy}
     NAME               SIZE FSTYPE …
-    …                  …
+    …
     pve                …
     ```
 
     </div>
 
-    You should see the `pve` volume group on the install disk.
+    The `pve` volume group sits on the install disk.
 
 ## Next
 
-[Prove web UI](prove-web-ui.md)
+[Update host](update-host.md){ .md-button }
